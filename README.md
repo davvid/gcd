@@ -1,6 +1,6 @@
 # gcd - Git worktree navigator
 
-`gcd` is lets you quickly navigate to Git worktrees on your filesystem.
+`gcd` lets you quickly navigate to Git worktrees on your filesystem.
 
 ![Preview](gcd.gif)
 
