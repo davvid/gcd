@@ -8,7 +8,7 @@
 
 * [eza](https://github.com/eza-community/eza) (required)
 
-* [fzf](https://github.com/junegunn/fzf#search-syntax) (required)
+* [fzf](https://github.com/junegunn/fzf) (required)
 
 * [fd](https://github.com/sharkdp/fd) (optional)
 
