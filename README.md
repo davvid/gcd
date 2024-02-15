@@ -2,6 +2,8 @@
 
 `gcd` is lets you quickly navigate to Git worktrees on your filesystem.
 
+![Preview](gcd.gif)
+
 ## Dependencies
 
 * [eza](https://github.com/eza-community/eza) (required)
