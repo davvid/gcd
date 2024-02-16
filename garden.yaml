@@ -12,3 +12,7 @@ trees:
     url: "git@gitlab.com:davvid/gcd.git"
     remotes:
       github: "git@github.com:davvid/gcd.git"
+    gitconfig:
+      remote.publish.pushurl:
+        - "git@gitlab.com:davvid/gcd.git"
+        - "git@github.com:davvid/gcd.git"
