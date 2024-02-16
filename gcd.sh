@@ -19,7 +19,7 @@ gcd () {
         )
     if test -n "${__gcd_worktree}"
     then
-        cd "${__gcd_worktree}"
+        cd "${__gcd_worktree}" || exit 1
     fi
 }
 
@@ -61,6 +61,7 @@ __gcd_worktrees () {
     fi
     if test -n  "${fdfind_cmd}"
     then
+        # shellcheck disable=SC2086
         "${fdfind_cmd}" ${fdfind_args} '^\.git$' "$@" | xargs -P 4 -n 1 dirname 2>/dev/null
     else
         find -L "$@" -maxdepth ${gcd_depth} -name .git -printf '%h\n' 2>/dev/null

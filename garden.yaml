@@ -1,0 +1,18 @@
+# Use "cargo install garden-tools" to install garden (https://gitlab.com/garden-rs/garden).
+# Usage:
+#   garden check
+commands:
+  check: shellcheck --exclude=SC2148 gcd.sh
+  setup: sudo apt install shellcheck
+
+trees:
+  gcd:
+    description: Git worktree navigator
+    path: "${GARDEN_CONFIG_DIR}"
+    url: "git@gitlab.com:davvid/gcd.git"
+    remotes:
+      github: "git@github.com:davvid/gcd.git"
+    gitconfig:
+      remote.publish.pushurl:
+        - "git@gitlab.com:davvid/gcd.git"
+        - "git@github.com:davvid/gcd.git"
