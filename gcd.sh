@@ -61,7 +61,7 @@ __gcd_worktrees () {
     fi
     if test -n  "${fdfind_cmd}"
     then
-        "${fdfind_cmd}" ${fdfind_args} '^\.git$' "$@" | xargs -P 4 -n 1 dirname
+        "${fdfind_cmd}" ${fdfind_args} '^\.git$' "$@" | xargs -P 4 -n 1 dirname 2>/dev/null
     else
         find -L "$@" -maxdepth ${gcd_depth} -name .git -printf '%h\n' 2>/dev/null
     fi
