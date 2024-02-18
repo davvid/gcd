@@ -2,6 +2,8 @@
 
 `gcd` lets you quickly navigate to Git worktrees on your filesystem.
 
+`cdg` lets you quickly navigate to directories within your current worktree.
+
 ![Preview](gcd.gif)
 
 ## Dependencies

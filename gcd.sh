@@ -11,6 +11,37 @@ gcd () {
     fi
 }
 
+# search for directories inside the current repository and change directories.
+# "cdg /" goes to the root of the current repository.
+cdg () {
+    if test "$(git rev-parse --is-inside-work-tree 2>/dev/null)" != "true"
+    then
+        return 0
+    fi
+    __gcd_initialize
+    __gcd_curdir="${PWD}"
+    __gcd_gitdir=$(git rev-parse --show-cdup 2>/dev/null) || return 0
+    if test -n "${__gcd_gitdir}"
+    then
+        if ! cd "${__gcd_gitdir}"
+        then
+            __gcd_finalize
+            return 0
+        fi
+    fi
+    __gcd_dir=$(
+        (echo . && git ls-tree -r -d --name-only HEAD 2>/dev/null) | __gcd_fzf "$@"
+    )
+    __gcd_finalize
+
+    if test -n "${__gcd_dir}"
+    then
+        cd "${__gcd_dir}" || return 0
+    else
+        cd "${__gcd_curdir}" || return 0
+    fi
+}
+
 # Initialize the zsh shell environment.
 __gcd_initialize () {
     __gcd_restore_zsh_wordsplit=
