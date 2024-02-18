@@ -2,35 +2,52 @@
 
 # Search for worktrees and change directories.
 gcd () {
-    __gcd_worktree=$(__gcd_worktrees |
-        fzf \
-            --ansi \
-            --border=none \
-            --cycle \
-            --filepath-word \
-            --info=inline-right \
-            --keep-right \
-            --preview='eza --all --color=always --git-ignore --group-directories-first --icons {}' \
-            --preview-window=down,33%,border-none \
-            --query="$*" \
-            --scheme=path \
-            --tiebreak=end,chunk,length
-        )
-    if test -n "${__gcd_worktree}"
+    __gcd_initialize
+    __gcd_dir=$(__gcd_worktrees | __gcd_fzf "$@")
+    __gcd_finalize
+    if test -n "${__gcd_dir}"
     then
-        cd "${__gcd_worktree}" || exit 1
+        cd "${__gcd_dir}" || return 0
     fi
+}
+
+# Initialize the zsh shell environment.
+__gcd_initialize () {
+    __gcd_restore_zsh_wordsplit=
+    if test -n "${ZSH_VERSION}" && test -z "$(setopt | grep shwordsplit)"
+    then
+        __gcd_restore_zsh_wordsplit=true
+        set -o shwordsplit
+    fi
+}
+
+
+# Restore the zsh shell environment.
+__gcd_finalize () {
+    if test -n "${__gcd_restore_zsh_wordsplit}"
+    then
+        set +o shwordsplit
+    fi
+}
+
+# Custom fzf used by gcd / gcdi
+__gcd_fzf () {
+    fzf \
+        --ansi \
+        --border=none \
+        --cycle \
+        --filepath-word \
+        --info=inline-right \
+        --keep-right \
+        --preview='eza --all --color=always --git-ignore --group-directories-first --icons {}' \
+        --preview-window=down,33%,border-none \
+        --query="$*" \
+        --scheme=path \
+        --tiebreak=end,chunk,length
 }
 
 # Find worktrees and print their paths to stdout.
 __gcd_worktrees () {
-    restore_zsh_wordsplit=
-    if test -n "${ZSH_VERSION}" && test -z "$(setopt | grep shwordsplit)"
-    then
-        restore_zsh_wordsplit=true
-        set -o shwordsplit
-    fi
-
     gcd_paths=$(git config --get-all gcd.paths | envsubst)
     if test -z "${gcd_paths}"
     then
@@ -64,10 +81,5 @@ __gcd_worktrees () {
         "${fdfind_cmd}" ${fdfind_args} '^\.git$' "$@" | xargs -P 4 -n 1 dirname 2>/dev/null
     else
         find -L "$@" -maxdepth ${gcd_depth} -name .git -printf '%h\n' 2>/dev/null
-    fi
-
-    if test -n "${restore_zsh_wordsplit}"
-    then
-        set +o shwordsplit
     fi
 }
