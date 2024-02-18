@@ -3,7 +3,6 @@
 # Search for worktrees and change directories.
 gcd () {
     __gcd_worktree=$(__gcd_worktrees |
-        uniq 2>/dev/null |
         fzf \
             --ansi \
             --border=none \
