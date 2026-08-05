@@ -70,7 +70,7 @@ __gcd_fzf () {
         --filepath-word \
         --info=inline-right \
         --keep-right \
-        --preview='eza --all --color=always --git-ignore --group-directories-first --icons {}' \
+        --preview='eza --all --color=always --git-ignore --group-directories-first --icons=auto {}' \
         --preview-window=down,33%,border-none \
         --query="$*" \
         --scheme=path \
